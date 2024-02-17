@@ -2,7 +2,8 @@
 
 #import pandas as pd
 
-CHUNK_SIZE = 5
+CHUNK_SIZE = 10
+CHUNK_RUN = 5
 
 original_string = "TGTAGTGCAGTGGCGTGATCTTGGCTCACTGCAGCCTCCACCTTAGAGCAATCCTCTTGCCTCATCCTCCCGGGTAGTTGGGACTACATGTGCATGCCACATGCCTGGCTAATTTTTGTATTTTTAGTA"
 pos = [15, 100, 54, 33, 19, 97, 13]
@@ -36,8 +37,8 @@ class my_string:
     def __init__(self):
         self.string = list(original_string)
         self.size = len(self.string)
-        self.cos = self.size // CHUNK_SIZE
-        self.res = self.size % CHUNK_SIZE
+        self.cos = (self.size - CHUNK_SIZE) // CHUNK_RUN
+        self.res = (self.size - CHUNK_SIZE) % CHUNK_RUN
         self.num_chunks = self.cos + (1 if self.res != 0 else 0) # If res != 0, then add 1, else add 0
 
     def print_chunk(self):
@@ -50,14 +51,13 @@ class my_string:
         print("Chunks\n")
 
         i = 0
-
-        
-
+'''
         for char in range(self.cos):
             print(i, "\t", end='')
             for i in range(i, i + CHUNK_SIZE):
                 print(self.string[i], end='')
                 #print(i)
+            i -= CHUNK_RUN
             i += 1
             print("")
             #print("------------------------------------")
@@ -69,12 +69,14 @@ class my_string:
             #print(i)
 
         print()
-
+'''
 def gen_comb(data, string):
     strings = []
     i = k = n = 0
     j = 1
+    k = 1
 
+    strings.append(my_string())
     strings.append(my_string())
 
     for i in range(string.cos):
@@ -82,21 +84,26 @@ def gen_comb(data, string):
         for j in range(j, j + CHUNK_SIZE):
             try:
                 n = data.pos.index(j) # returns the index of the element j
-                strings[k].string[j-2] = data.alt[n] # makes the swap
+                strings[k].string[j] = data.alt[n] # makes the swap
                 swapped = True
-                #print(i, j, k)
             except ValueError:
                 pass
 
 
         if swapped:
+            if k > 0 and strings[k].string == strings[k-1].string:
+                del strings[-1]
+            else:
+                print(i, j, k)
+                k += 1
             strings.append(my_string())
-            k += 1
-            #print("---------------------")
+            print("---------------------")
 
-
+        j += CHUNK_RUN - CHUNK_SIZE
         j += 1
+
     swapped = False
+
     for j in range(j, j + string.res):
         try:
             n = data.pos.index(j) # returns the index of the element j
@@ -106,25 +113,31 @@ def gen_comb(data, string):
         except ValueError:
             pass
     if swapped:
-        strings.append(my_string())
         k += 1
         #print("---------------------")
+    else:
+        del strings[-1]
 
-
-    return strings, k-1 # k-1 is the number of chunks generated
+    return strings, k
 
 main_string = my_string()
-#main_string.print_chunk()
+main_string.print_chunk()
 print(''.join(main_string.string))
 
 data = my_data(pos, ref, alt)
-data.bubble_sort()
+
 
 print(data)
 
 combinations, main_string.num_chunks = gen_comb(data, main_string)
 
-i = 0
+j = 0
+for i in range (main_string.num_chunks):
+    for j in pos:
+        print(''.join(combinations[i].string[j]), end='')
+    print("")
+
+print("")
 
 for i in range (main_string.num_chunks):
     #combinations[0].print_chunk()

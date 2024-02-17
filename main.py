@@ -51,6 +51,8 @@ class my_string:
 
         i = 0
 
+        
+
         for char in range(self.cos):
             print(i, "\t", end='')
             for i in range(i, i + CHUNK_SIZE):
@@ -70,19 +72,26 @@ class my_string:
 
 def gen_comb(data, string):
     strings = []
-    j = 0
+    i = j = n = 0
 
-    for i in range(string.num_chunks):
+    for i in range(string.cos):
         strings.append(my_string())
+        for j in range(j, j + CHUNK_SIZE):
+            try:
+                n = data.pos.index(j)
+                strings[i].string[j] = data.alt[n]
+            except ValueError:
+                pass
+
+        j += 1
+    
+    strings.append(my_string())
+    for j in range(j, j + string.res):
         try:
             n = data.pos.index(j)
-            print(i, j, n)
             strings[i].string[j] = data.alt[n]
         except ValueError:
             pass
-        j += CHUNK_SIZE
-    i += 1
-
 
     return strings
 
@@ -97,7 +106,7 @@ print(data)
     
 combinations = gen_comb(data, main_string)
 
-
 for i in range(main_string.cos):
     #combinations[0].print_chunk()
-    print(i, ''.join(combinations[i].string))
+    print(i+1, ''.join(combinations[i].string))
+

@@ -6,9 +6,9 @@ CHUNK_SIZE = 10
 CHUNK_RUN = 5
 
 original_string = "TGTAGTGCAGTGGCGTGATCTTGGCTCACTGCAGCCTCCACCTTAGAGCAATCCTCTTGCCTCATCCTCCCGGGTAGTTGGGACTACATGTGCATGCCACATGCCTGGCTAATTTTTGTATTTTTAGTA"
-pos = [15, 100, 54, 33, 19, 97, 13]
-ref = "TATGCCC" 
-alt = "AGAAGTA"
+pos = [43, 15, 100, 54, 33, 19, 97, 13]
+ref = "TTATGCCC" 
+alt = "CAGAAGTA"
 
 class my_data:
     def __init__(self, pos, ref, alt):
@@ -87,6 +87,8 @@ def gen_comb(data, string):
                 n = data.pos.index(j) # returns the index of the element j
                 strings[k].string[j] = data.alt[n] # makes the swap
                 swapped = True
+                print(i, j, k)
+
             except ValueError:
                 pass
 
@@ -95,7 +97,7 @@ def gen_comb(data, string):
             if k > 0 and strings[k].string == strings[k-1].string:
                 del strings[-1]
             else:
-                print(i, j, k)
+                #print(i, j, k)
                 k += 1
             strings.append(my_string())
             print("---------------------")
@@ -128,6 +130,7 @@ main_string.print_chunk()
 print(''.join(main_string.string))
 
 data = my_data(pos, ref, alt)
+data.bubble_sort()
 
 print("")
 

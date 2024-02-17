@@ -37,23 +37,24 @@ class my_string:
     def __init__(self):
         self.string = list(original_string)
         self.size = len(self.string)
-        self.cos = (self.size - CHUNK_SIZE) // CHUNK_RUN
-        self.res = (self.size - CHUNK_SIZE) % CHUNK_RUN
+        self.cos = self.size // CHUNK_RUN - 1
+        self.res = self.size % CHUNK_SIZE
         self.num_chunks = self.cos + (1 if self.res != 0 else 0) # If res != 0, then add 1, else add 0
 
     def print_chunk(self):
         print("String\n")
 
         print("Size: ", self.size)
-        print("Numbers of Chunks: ", self.num_chunks)
+        print("Max numbers of Chunks: ", self.num_chunks)
         print("Last chunk size: ", self.res, end='\n\n')
 
-        print("Chunks\n")
+        print("Runs\n")
 
         i = 0
-'''
-        for char in range(self.cos):
-            print(i, "\t", end='')
+        runs = 0
+
+        for runs in range(self.cos):
+            print(runs + 1, "\t", i, "-", i + CHUNK_SIZE, "\t", end='')
             for i in range(i, i + CHUNK_SIZE):
                 print(self.string[i], end='')
                 #print(i)
@@ -62,21 +63,21 @@ class my_string:
             print("")
             #print("------------------------------------")
 
-        print(i, end='\t')
+        runs += 1
+
+        print(runs + 1, "\t", i, "-", i + self.res , end='\t')
 
         for i in range(i, i + self.res):
             print(self.string[i], end='')
             #print(i)
 
-        print()
-'''
+        print("\n")
+
 def gen_comb(data, string):
     strings = []
     i = k = n = 0
     j = 1
-    k = 1
 
-    strings.append(my_string())
     strings.append(my_string())
 
     for i in range(string.cos):
@@ -118,6 +119,8 @@ def gen_comb(data, string):
     else:
         del strings[-1]
 
+    print("")
+
     return strings, k
 
 main_string = my_string()
@@ -126,8 +129,9 @@ print(''.join(main_string.string))
 
 data = my_data(pos, ref, alt)
 
+print("")
 
-print(data)
+print(data, "\n")
 
 combinations, main_string.num_chunks = gen_comb(data, main_string)
 

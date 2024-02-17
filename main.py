@@ -16,7 +16,7 @@ class my_data:
         self.alt = list(alt)
 
     def __str__(self):
-        return f"my_data: pos={self.pos}, ref='{self.ref}', alt='{self.alt}'"
+        return f"my_data: pos={self.pos}, ref='{''.join(self.ref)}', alt='{''.join(self.alt)}'"
 
     def bubble_sort(self):
         n = len(self.pos)
@@ -72,28 +72,46 @@ class my_string:
 
 def gen_comb(data, string):
     strings = []
-    i = j = n = 0
+    i = k = n = 0
+    j = 1
+
+    strings.append(my_string())
 
     for i in range(string.cos):
-        strings.append(my_string())
+        swapped = False
         for j in range(j, j + CHUNK_SIZE):
             try:
-                n = data.pos.index(j)
-                strings[i].string[j] = data.alt[n]
+                n = data.pos.index(j) # returns the index of the element j
+                strings[k].string[j-2] = data.alt[n] # makes the swap
+                swapped = True
+                #print(i, j, k)
             except ValueError:
                 pass
 
+
+        if swapped:
+            strings.append(my_string())
+            k += 1
+            #print("---------------------")
+
+
         j += 1
-    
-    strings.append(my_string())
+    swapped = False
     for j in range(j, j + string.res):
         try:
-            n = data.pos.index(j)
-            strings[i].string[j] = data.alt[n]
+            n = data.pos.index(j) # returns the index of the element j
+            strings[k].string[j-1] = data.alt[n] # makes the swap
+            swapped = True
+            #print(i, j, k)
         except ValueError:
             pass
+    if swapped:
+        strings.append(my_string())
+        k += 1
+        #print("---------------------")
 
-    return strings
+
+    return strings, k-1 # k-1 is the number of chunks generated
 
 main_string = my_string()
 #main_string.print_chunk()
@@ -103,10 +121,13 @@ data = my_data(pos, ref, alt)
 data.bubble_sort()
 
 print(data)
-    
-combinations = gen_comb(data, main_string)
 
-for i in range(main_string.cos):
+combinations, main_string.num_chunks = gen_comb(data, main_string)
+
+i = 0
+
+for i in range (main_string.num_chunks):
     #combinations[0].print_chunk()
     print(i+1, ''.join(combinations[i].string))
+    i += 1
 

@@ -73,57 +73,77 @@ class my_string:
 
         print("\n")
 
-def gen_comb(data, string):
-    strings = []
-    i = k = n = 0
-    j = 1
+# gen fn's will just generate every set of alterations (chunks)
 
-    strings.append(my_string())
+def gen_chunks(string, data):
+    strings = [data.ref]
+    i = n = j = m = 0
+    k = 1
+
+    strings.append(data.ref)
+    strings.append(data.ref)
 
     for i in range(string.cos):
         swapped = False
         for j in range(j, j + CHUNK_SIZE):
             try:
                 n = data.pos.index(j) # returns the index of the element j
-                strings[k].string[j] = data.alt[n] # makes the swap
+                strings[k][n] = data.alt[n] # inserts the founded element
                 swapped = True
-                print(i, j, k)
+                print(i, j, k, n)
 
             except ValueError:
                 pass
 
+        strings = ["".join(map(str, inner_array)) for inner_array in strings]
 
         if swapped:
-            if k > 0 and strings[k].string == strings[k-1].string:
+            if strings[k] == strings[k-1]:
                 del strings[-1]
             else:
                 #print(i, j, k)
                 k += 1
-            strings.append(my_string())
+            strings.append(''.join(data.ref))
             print("---------------------")
 
         j += CHUNK_RUN - CHUNK_SIZE
         j += 1
+
+        strings = [list(string) for string in strings]
 
     swapped = False
 
     for j in range(j, j + string.res):
         try:
             n = data.pos.index(j) # returns the index of the element j
-            strings[k].string[j-1] = data.alt[n] # makes the swap
+            strings[k][n] = data.alt[n] # inserts the founded element
             swapped = True
-            #print(i, j, k)
+            print(i, j, k, n)
         except ValueError:
             pass
+
     if swapped:
-        k += 1
-        #print("---------------------")
-    else:
-        del strings[-1]
+        if strings[k] == strings[k-1]:
+            del strings[-1]
+        else:
+            #print(i, j, k)
+            k += 1
+        print("---------------------")
 
     print("")
 
+    strings = ["".join(map(str, inner_array)) for inner_array in strings]
+
     return strings, k
+
+def gen_comb(string, data, arr):
+    pass
+
+def gen_var(string, data, arr):
+    pass
+
+def get_chunks(): # This will save the generated chunks in an array 
+    pass
 
 main_string = my_string()
 main_string.print_chunk()
@@ -136,18 +156,18 @@ print("")
 
 print(data, "\n")
 
-combinations, main_string.num_chunks = gen_comb(data, main_string)
+chunks, main_string.num_chunks = gen_chunks(main_string, data)
 
 j = 0
+'''
 for i in range (main_string.num_chunks):
     for j in pos:
-        print(''.join(combinations[i].string[j]), end='')
+        print(i, ''.join(chunks[i]), end='')
     print("")
-
+'''
 print("")
 
 for i in range (main_string.num_chunks):
     #combinations[0].print_chunk()
-    print(i+1, ''.join(combinations[i].string))
+    print(i, ''.join(chunks[i]))
     i += 1
-

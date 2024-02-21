@@ -1,14 +1,12 @@
 # https://github.com/Forajido24/Actividad4
 
-import gui.py
-
 CHUNK_SIZE = 10
 CHUNK_RUN = 5
 
-original_string = gui.original_string
-pos = gui.pos
-ref = gui.ref
-alt = gui.alt
+original_string = "TGTAGTGCAGTGGCGTGATCTTGGCTCACTGCAGCCTCCACCTTAGAGCAATCCTCTTGCCTCATCCTCCCGGGTAGTTGGGACTACATGTGCATGCCACATGCCTGGCTAATTTTTGTATTTTTAGTA"
+pos = [43, 15, 100, 54, 33, 19, 97, 13]
+ref = "TTATGCCC" 
+alt = "CAGAAGTA"
 
 class my_data:
     def __init__(self, pos, ref, alt):
@@ -142,8 +140,20 @@ def gen_comb(string, data, arr):
 def gen_var(string, data, arr):
     pass
 
-def get_chunks(): # This will save the generated chunks in an array 
-    pass
+def get_chunks(string, data, arr): # This will save the generated chunks in an array 
+    chunks = []
+    k = len(arr)
+
+    for i in range(k):
+        chunks.append(string.string)
+        for j in data.pos:
+            try:
+                n = data.pos.index(j) # returns the index of the element j
+                strings.string[i] = data.alt[n]
+            except:
+                pass
+
+    return chunks
 
 main_string = my_string()
 main_string.print_chunk()
@@ -158,16 +168,15 @@ print(data, "\n")
 
 chunks, main_string.num_chunks = gen_chunks(main_string, data)
 
+chunks_strings = get_chunks(main_string, data, chunks)
+
 j = 0
-'''
-for i in range (main_string.num_chunks):
-    for j in pos:
-        print(i, ''.join(chunks[i]), end='')
-    print("")
-'''
+for i in range (1, main_string.num_chunks):
+    print(i, ''.join(chunks_strings[i]))
 print("")
 
 for i in range (main_string.num_chunks):
     #combinations[0].print_chunk()
     print(i, ''.join(chunks[i]))
     i += 1
+

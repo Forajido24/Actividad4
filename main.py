@@ -5,10 +5,10 @@ import gui.py
 CHUNK_SIZE = 10
 CHUNK_RUN = 5
 
-gui.original_string = "TGTAGTGCAGTGGCGTGATCTTGGCTCACTGCAGCCTCCACCTTAGAGCAATCCTCTTGCCTCATCCTCCCGGGTAGTTGGGACTACATGTGCATGCCACATGCCTGGCTAATTTTTGTATTTTTAGTA"
-gui.pos = [43, 15, 100, 54, 33, 19, 97, 13]
-gui.ref = "TTATGCCC" 
-gui.alt = "CAGAAGTA"
+original_string = gui.original_string
+pos = gui.pos
+ref = gui.ref
+alt = gui.alt
 
 class my_data:
     def __init__(self, pos, ref, alt):

@@ -8,40 +8,47 @@ Raiz.config(width=900, height=800)
 
 #Funciones nuevas----------------------------------------------------
 def leer():
-    global filename
+    global filename,pos,ref,alt,original_string
     # Configurar los tipos de archivo a mostrar (solo archivos CSV)
     filetypes = [('Archivos CSV', '*.csv')]
     filename = filedialog.askopenfilename(filetypes=filetypes)
 
     if filename:
         df = pd.read_csv(filename, header=0)
-        original_string = df['string_a_modificar'][0]
+        string = df['string_a_modificar'][0]
+        original_string=string
+        pos=posiciones()
+        ref=referencia()
+        alt=alteracion()
         print(original_string)
-        posiciones()
-        referencia()
-        alteracion()
-        return original_string
+        print(pos)
+        print(ref)
+        print(alt)
 
 def posiciones():
     global filename
     df = pd.read_csv(filename, header=0)
     pos = df['posicion'].tolist()
-    print(pos)
     return pos
 
 def referencia():
     global filename
     df = pd.read_csv(filename, header=0)
     ref = df['referencia'].str.cat()
-    print(ref)
     return ref
 
 def alteracion():
     global filename
     df = pd.read_csv(filename, header=0)
     alt = df['alteracion'].str.cat()
-    print(alt)
     return alt
+#------------------------------------------------------------------------------------------------------
+original_string = ""
+pos = []
+ref = "" 
+alt = ""
+
+
 #------------------------------------------------------------------------------------------------------
 MFrame = Frame(Raiz)
 MFrame.config(width=900, height=800, bg="#DBF5EF")
